@@ -27,6 +27,10 @@ const schema = new mongoose.Schema({
         min: 1,
         max: 6
     },
+    creatorId: {
+        type: mongoose.SchemaTypes.String,
+        required: true,
+    }, 
     accessories: [{
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'Accessory'

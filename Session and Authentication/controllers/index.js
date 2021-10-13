@@ -1,14 +1,30 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 const Cube = require('../models/Cube');
 const Accessory = require('../models/Accessory');
 const searchController = require('./search');
 const createController = require('./create');
+const userController = require('./user');
+const User = require('../models/User');
 
-router.get('/', (req, res) => {
+router.get('/', async(req, res) => {
+    const userToken = req.cookies['userToken'];
+    console.log(userToken)
+    const user = null;
+    const isUser = false;
+    if(userToken){
+        const decodedToken = jwt.verify(userToken, 'supersecret123');
+        // console.log('decoded', decodedToken)
+        user = await User.findById(decodedToken._id);
+    };
+    if(user !== null){
+        isUser = true;
+    }
     Cube.find()
         .then(cubes => {
-            res.render('index', { layout: false, cube: cubes })
+            res.render('index', { cube: cubes, isUser })
         })
         .catch(err => {
             console.log(err);
@@ -22,7 +38,7 @@ router.get('/attach/accessory/:id', (req, res) => {
             Accessory
                 .find({ '_id': { "$nin": cube.accessories } })
                 .then(accessories => {
-                    res.render('attachAccessory', { layout: false, cube, accessories });
+                    res.render('attachAccessory', { cube, accessories });
                 })
                 .catch(err => {
                     console.log("Error with accessories search: ", err);
@@ -45,7 +61,7 @@ router.post('/attach/accessory/:id', async(req, res) => {
 });
 
 router.get('/about', (req, res) => {
-    res.render('about', { layout: false })
+    res.render('about')
 });
 
 router.get('/details/:id', (req, res) => {
@@ -64,9 +80,10 @@ router.get('/details/:id', (req, res) => {
 
 router.use('/create', createController);
 router.use('/search', searchController);
+router.use('/user', userController);
 
 router.get('*', (req, res) => {
-    res.render('404', { layout: false })
+    res.render('404')
 });
 
 module.exports = router;

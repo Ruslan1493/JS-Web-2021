@@ -4,7 +4,7 @@ const Cube = require('../models/Cube');
 const Accessory = require('../models/Accessory');
 
 router.get('/accessory', (req, res) => {
-    res.render('createAccessory', { layout: false });
+    res.render('createAccessory');
 });
 
 router.post('/accessory', (req, res) => {
@@ -21,7 +21,7 @@ router.post('/accessory', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    res.render('create', { layout: false })
+    res.render('create')
 });
 
 router.post('/', async (req, res) => {

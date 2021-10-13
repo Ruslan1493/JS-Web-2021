@@ -13,7 +13,7 @@ router.post('/', (req, res) => {
                     ((to !== '') ? Number(cube.difficulty) <= Number(to) : Number(cube.difficulty) >= 1) &&
                     ((from !== '') ? Number(cube.difficulty) >= Number(from) : Number(cube.difficulty <= 6))
             })
-            res.render('index', { layout: false, cube: cubes });
+            res.render('index', { cube: cubes });
         })
         .catch(err => {
             console.log("Error with cubes filter: ", err);

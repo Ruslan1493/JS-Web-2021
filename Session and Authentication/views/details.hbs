@@ -4,7 +4,9 @@
   <div class="details">
     <p><span>Description:</span> {{cube.description}}</p>
     <p><span>Difficulty level:</span> {{cube.difficulty}}</p>
-    <a class="btn" href="/attach/accessory/{{cube._id}}">Attach accessory</a>
+    {{#if isUser}}
+      <a class="btn" href="/attach/accessory/{{cube._id}}">Attach accessory</a>
+    {{/if}}
     <a class="btn" href="/">Back</a>
   </div>
 </main>

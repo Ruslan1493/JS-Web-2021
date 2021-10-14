@@ -2,12 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Cube = require('../models/Cube');
 const Accessory = require('../models/Accessory');
+const { isAuthenticated } = require('../middlewares/middlewares');
 
-router.get('/accessory', (req, res) => {
-    res.render('createAccessory');
+router.get('/accessory', isAuthenticated, (req, res) => {
+    res.render('createAccessory', { isUser: req.isUser });
 });
 
-router.post('/accessory', (req, res) => {
+router.post('/accessory', isAuthenticated, (req, res) => {
     const { name, description, imageUrl } = req.body;
     Accessory.create({
         name, description, imageUrl
@@ -20,11 +21,11 @@ router.post('/accessory', (req, res) => {
         });
 });
 
-router.get('/', (req, res) => {
-    res.render('create')
+router.get('/', isAuthenticated, (req, res) => {
+    res.render('create', { isUser: req.isUser })
 });
 
-router.post('/', async (req, res) => {
+router.post('/', isAuthenticated, async (req, res) => {
     const { name, description, imageUrl, difficultyLevel } = req.body
 
     Cube.create({
